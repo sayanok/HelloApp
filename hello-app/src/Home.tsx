@@ -1,12 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Home: React.FC = () => {
+type HomeProps = {
+  username: string;
+  setIsLogined: Dispatch<SetStateAction<boolean>>;
+  isLogined: boolean;
+};
+
+const Home: React.FC<HomeProps> = (props) => {
   const navigate = useNavigate();
   const [locationData, setLocationData] = useState("");
   const [loginMessage, setLoginMessage] = useState("");
 
   useEffect(() => {
+    if (!props.isLogined) {
+      navigate("/login");
+    }
     getLocationData();
     setTranslatedMessage();
   });
@@ -44,10 +53,15 @@ const Home: React.FC = () => {
 
   function logout() {
     navigate("/login");
+    props.setIsLogined(false);
+    alert(`Have a great day ${props.username}!`);
   }
+
   return (
     <>
-      <p>{loginMessage}username you have successfully logged in!</p>
+      <p>
+        {loginMessage} {props.username} you have successfully logged in!
+      </p>
       <button onClick={() => logout()}>ログアウト</button>
     </>
   );

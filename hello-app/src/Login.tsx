@@ -1,26 +1,33 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const Login: React.FC = () => {
-  const [username, setUsername] = useState("");
+type LoginProps = {
+  setUsername: Dispatch<SetStateAction<string>>;
+  username: string;
+  setIsLogined: Dispatch<SetStateAction<boolean>>;
+};
+
+const Login: React.FC<LoginProps> = (props) => {
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState<null | string>();
   const testUsername = "admin";
   const testPassword = "password";
   const navigate = useNavigate();
 
   function setInput(input: string, item: string) {
+    setErrorMessage(null);
     if (item === "username") {
-      setUsername(input);
+      props.setUsername(input);
     } else {
       setPassword(input);
     }
   }
 
   function loginHandler() {
-    if (username === testUsername && password === testPassword) {
+    if (props.username === testUsername && password === testPassword) {
       navigate("/home");
-      setErrorMessage("");
+      setErrorMessage(null);
+      props.setIsLogined(true);
     } else {
       setErrorMessage("usernameかpasswordがちがうよ");
     }
@@ -35,6 +42,7 @@ export const Login: React.FC = () => {
           onChange={(e) => {
             setInput(e.target.value, "username");
           }}
+          style={{ borderColor: errorMessage ? "red" : "black" }}
         ></input>
       </p>
       <p>
@@ -44,6 +52,7 @@ export const Login: React.FC = () => {
           onChange={(e) => {
             setInput(e.target.value, "password");
           }}
+          style={{ borderColor: errorMessage ? "red" : "black" }}
         ></input>
       </p>
       <button
