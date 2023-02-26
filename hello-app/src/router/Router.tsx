@@ -5,14 +5,7 @@ import Login from "../Login";
 export const Router = () => {
   return (
     <Routes>
-      <Route
-        path="/login"
-        element={
-          <>
-            <Login />
-          </>
-        }
-      />
+      <Route path="/login" element={<Login />} />
       <Route path="/home" element={<Home />} />
     </Routes>
   );

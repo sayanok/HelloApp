@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 export const Login: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const testUsername = "admin";
   const testPassword = "password";
   const navigate = useNavigate();
@@ -16,17 +17,12 @@ export const Login: React.FC = () => {
     }
   }
 
-  function onClickHandler() {
-    if (confirmCredentials()) {
-      navigate("/home");
-    }
-  }
-
-  function confirmCredentials() {
+  function loginHandler() {
     if (username === testUsername && password === testPassword) {
-      return true;
+      navigate("/home");
+      setErrorMessage("");
     } else {
-      return false;
+      setErrorMessage("usernameかpasswordがちがうよ");
     }
   }
 
@@ -52,14 +48,12 @@ export const Login: React.FC = () => {
       </p>
       <button
         onClick={() => {
-          onClickHandler();
+          loginHandler();
         }}
       >
         ログイン
       </button>
-
-      {username}
-      {password}
+      <p>{errorMessage}</p>
     </>
   );
 };
